@@ -1,22 +1,12 @@
 <script lang="ts">
-	import { createListPosts } from '../../api/posts/posts';
-
-	const query = createListPosts({
-		page: 1,
-		size: 5
-	});
+	const { data } = $props();
 </script>
 
 <div>
-	<!-- {#if $query.isLoading} -->
-	<!-- 	<span>Loading...</span> -->
-	<!-- {:else if $query.isError} -->
-	<!-- 	<span>Error: {$query.error?.message}</span> -->
-	<!-- {:else} -->
-	<!-- 	<ul> -->
-	<!-- 		{#each $query.data?.data as pet} -->
-	<!-- 			<li>{pet.title}</li> -->
-	<!-- 		{/each} -->
-	<!-- 	</ul> -->
-	<!-- {/if} -->
+	<ul>
+		{#each data.data as post}
+			<li>{post.title}</li>
+			<div>post.content</div>
+		{/each}
+	</ul>
 </div>
