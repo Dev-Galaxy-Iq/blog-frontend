@@ -76,7 +76,7 @@ import type {
   UpdatePostBodyOne,
   UpdatePostBodyThree,
   UpdatePostBodyTwo
-} from '.././model';
+} from '.././schemas';
 
 
 

@@ -1,4 +1,4 @@
-import { listPosts } from "../../api/posts/posts"
+import { listPosts } from "$lib/api/posts/posts"
 
 export const load = async () => {
   const res = await listPosts({

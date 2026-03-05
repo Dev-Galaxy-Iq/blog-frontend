@@ -75,7 +75,7 @@ import type {
   PatchCommentsByCommentIdBodyOne,
   PatchCommentsByCommentIdBodyThree,
   PatchCommentsByCommentIdBodyTwo
-} from '.././model';
+} from '.././schemas';
 
 
 

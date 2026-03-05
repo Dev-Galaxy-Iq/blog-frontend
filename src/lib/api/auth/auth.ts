@@ -47,7 +47,7 @@ import type {
   AuthRegisterBodyOne,
   AuthRegisterBodyThree,
   AuthRegisterBodyTwo
-} from '.././model';
+} from '.././schemas';
 
 
 

@@ -7,6 +7,7 @@
       "dependencies": {
         "@tanstack/svelte-query": "^6.1.0",
         "axios": "^1.13.6",
+        "zod": "^4.3.6",
       },
       "devDependencies": {
         "@internationalized/date": "^3.10.0",

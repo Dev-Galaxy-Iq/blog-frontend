@@ -33,7 +33,7 @@ import type {
   GetUsersShowByUserId409,
   GetUsersShowByUserId422,
   GetUsersShowByUserId500
-} from '.././model';
+} from '.././schemas';
 
 
 
