@@ -9,4 +9,5 @@
 export type AuthMe400 = {
   success: false;
   message: string;
+  data: null;
 };

@@ -9,4 +9,5 @@
 export type RemovePost400 = {
   success: false;
   message: string;
+  data: null;
 };

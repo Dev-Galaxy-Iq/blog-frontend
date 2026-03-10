@@ -9,4 +9,5 @@
 export type AddComment500 = {
   success: false;
   message: string;
+  data: null;
 };

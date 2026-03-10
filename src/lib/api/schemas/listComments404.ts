@@ -9,4 +9,5 @@
 export type ListComments404 = {
   success: false;
   message: string;
+  data: null;
 };

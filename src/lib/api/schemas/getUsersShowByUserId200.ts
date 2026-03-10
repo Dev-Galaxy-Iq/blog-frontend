@@ -8,7 +8,7 @@
 import type { GetUsersShowByUserId200Data } from './getUsersShowByUserId200Data';
 
 export type GetUsersShowByUserId200 = {
-  success: true;
+  success: boolean;
   message: string;
   data: GetUsersShowByUserId200Data;
 };

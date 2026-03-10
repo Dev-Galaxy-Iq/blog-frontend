@@ -9,4 +9,5 @@
 export type GetUsersShowByUserId401 = {
   success: false;
   message: string;
+  data: null;
 };

@@ -28,7 +28,7 @@ export const actions: Actions = {
         name: res.data.name,
         username: res.data.username
       })
-      return { data: logged.data }
+      return { data: logged.data.data }
     } catch (err: any) {
       if (isAxiosError(err)) {
         return fail(err.response?.status ?? 400, {

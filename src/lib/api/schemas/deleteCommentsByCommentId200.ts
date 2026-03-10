@@ -8,7 +8,7 @@
 import type { DeleteCommentsByCommentId200Data } from './deleteCommentsByCommentId200Data';
 
 export type DeleteCommentsByCommentId200 = {
-  success: true;
+  success: boolean;
   message: string;
   data: DeleteCommentsByCommentId200Data;
 };

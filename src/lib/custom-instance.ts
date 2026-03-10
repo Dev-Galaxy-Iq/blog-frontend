@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { AxiosRequestConfig } from "axios";
+import type { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:4000",
@@ -9,6 +9,6 @@ const axiosInstance = axios.create({
   }
 })
 
-export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
-  return axiosInstance(config).then((res) => res.data);
+export const customInstance = <T>(config: AxiosRequestConfig): Promise<import('axios').AxiosResponse<T>> => {
+  return axiosInstance(config);
 };

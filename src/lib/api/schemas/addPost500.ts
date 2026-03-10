@@ -9,4 +9,5 @@
 export type AddPost500 = {
   success: false;
   message: string;
+  data: null;
 };

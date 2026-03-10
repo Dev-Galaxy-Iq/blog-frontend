@@ -8,7 +8,7 @@
 import type { PatchCommentsByCommentId200Data } from './patchCommentsByCommentId200Data';
 
 export type PatchCommentsByCommentId200 = {
-  success: true;
+  success: boolean;
   message: string;
   data: PatchCommentsByCommentId200Data;
 };

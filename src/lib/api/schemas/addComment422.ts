@@ -9,4 +9,5 @@
 export type AddComment422 = {
   success: false;
   message: string;
+  data: null;
 };

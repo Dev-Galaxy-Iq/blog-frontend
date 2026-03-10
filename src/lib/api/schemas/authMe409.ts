@@ -9,4 +9,5 @@
 export type AuthMe409 = {
   success: false;
   message: string;
+  data: null;
 };

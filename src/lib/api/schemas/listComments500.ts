@@ -9,4 +9,5 @@
 export type ListComments500 = {
   success: false;
   message: string;
+  data: null;
 };

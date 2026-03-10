@@ -9,4 +9,5 @@
 export type AddPost422 = {
   success: false;
   message: string;
+  data: null;
 };

@@ -9,4 +9,5 @@
 export type AddComment404 = {
   success: false;
   message: string;
+  data: null;
 };

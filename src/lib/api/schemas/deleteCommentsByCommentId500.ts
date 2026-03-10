@@ -9,4 +9,5 @@
 export type DeleteCommentsByCommentId500 = {
   success: false;
   message: string;
+  data: null;
 };

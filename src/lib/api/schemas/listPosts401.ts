@@ -9,4 +9,5 @@
 export type ListPosts401 = {
   success: false;
   message: string;
+  data: null;
 };
