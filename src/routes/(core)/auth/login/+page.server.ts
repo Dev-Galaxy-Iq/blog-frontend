@@ -1,7 +1,7 @@
 import { authLogin } from "$lib/api/auth/auth"
 import { authLoginBody } from "$lib/api/auth/auth.zod"
-import type { AuthLogin400 } from "$lib/api/schemas"
 import { fail, type Actions } from "@sveltejs/kit"
+import z from "zod"
 
 export const actions: Actions = {
   default: async ({ request }) => {
@@ -9,23 +9,26 @@ export const actions: Actions = {
 
     const res = authLoginBody.safeParse({
       email: data.get("email"),
-      password: data.get("password")
+      password: data.get("password"),
     })
 
     if (!res.success) {
-      return fail(400, { message: "Invalid input" });
+      return fail(400, {
+        errors: z.flattenError(res.error).fieldErrors
+      });
     }
 
-    try {
-      await authLogin({
-        email: res.data.email,
-        password: res.data.password
-      })
+    // const loged = await authLogin({
+    //   email: res.data.email,
+    //   password: res.data.password
+    // })
 
-      return { success: true };
-    } catch (error: any) {
-      let err: AuthLogin400 = error.response.data
-      return fail(400, { message: err.message || "Login failed" });
+    // if (!loged.data.data.name) return fail(400, {
+    //
+    // })
+
+    return {
+      data: "loged.data"
     }
   }
 }

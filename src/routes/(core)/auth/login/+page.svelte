@@ -1,34 +1,55 @@
-<script lang="ts">
+<script>
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import CardContent from '$lib/components/ui/card/card-content.svelte';
-	import Card from '$lib/components/ui/card/card.svelte';
+	import InputGroupButton from '$lib/components/ui/input-group/input-group-button.svelte';
+	import InputGroupInput from '$lib/components/ui/input-group/input-group-input.svelte';
+	import InputGroup from '$lib/components/ui/input-group/input-group.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import type { ActionData } from './$types';
+	import { Eye, EyeClosed } from '@lucide/svelte';
 
-	export let form: ActionData;
+	const { form } = $props();
+	let showPass = $state(false);
 </script>
 
-<div class="flex h-dvh w-full items-center justify-center">
-	<Card>
-		<CardContent class="w-[30em]">
-			<form method="POST" use:enhance>
-				{#if form?.message}
-					<div class="mb-4 text-sm font-medium text-red-500">{form.message}</div>
+<div class="flex h-dvh items-center justify-center">
+	<form method="POST" use:enhance class="flex flex-col gap-2 rounded-2xl border bg-card p-4">
+		<p class="text-2xl font-bold">Login</p>
+
+		<Label for="email">Email Address</Label>
+		<Input
+			id="email"
+			type="email"
+			defaultvalue={'test@gmail.com'}
+			placeholder="email"
+			name="email"
+			autocomplete="off"
+		/>
+		{#if form?.errors?.email}
+			<p class="text-sm text-destructive">{form.errors.email[0]}</p>
+		{/if}
+		<Label for="password">Password</Label>
+
+		<InputGroup>
+			<InputGroupInput
+				type={showPass ? 'text' : 'password'}
+				id="password"
+				placeholder="password"
+				name="password"
+				autocomplete="off"
+				defaultvalue={'123456789'}
+			/>
+			<InputGroupButton onclick={() => (showPass = !showPass)}>
+				{#if showPass}
+					<EyeClosed />
+				{:else}
+					<Eye />
 				{/if}
-
-				<div class="flex flex-col gap-2">
-					<Label for="email">Email</Label>
-					<Input name="email" id="email" placeholder="Enter email address" type="email" />
-				</div>
-				<div class="my-4 flex flex-col gap-2">
-					<Label for="password">Password</Label>
-					<Input name="password" placeholder="Enter password" type="text" />
-				</div>
-
-				<Button type="submit">Submit</Button>
-			</form>
-		</CardContent>
-	</Card>
+			</InputGroupButton>
+		</InputGroup>
+		{#if form?.errors?.password}
+			<p class="text-sm text-destructive">{form.errors.password[0]}</p>
+		{/if}
+		<Button class="mt-3 w-max" type="submit">Submit</Button>
+	</form>
 </div>
