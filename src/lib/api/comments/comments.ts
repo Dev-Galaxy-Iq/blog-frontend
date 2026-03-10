@@ -21,13 +21,6 @@ import type {
   QueryKey
 } from '@tanstack/svelte-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   AddComment200,
   AddComment400,
@@ -77,6 +70,7 @@ import type {
   PatchCommentsByCommentIdBodyTwo
 } from '.././schemas';
 
+import { customInstance } from '../../custom-instance';
 
 
 
@@ -87,28 +81,30 @@ import type {
  */
 export const addComment = (
     postId: string,
-    addCommentBody: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AddComment200>> => {
-    
-    
-    return axios.post(
-      `http://localhost:4000/comments/${postId}`,
-      addCommentBody,options
-    );
-  }
+    addCommentBody: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<AddComment200>(
+      {url: `http://localhost:4000/comments/${postId}`, method: 'POST',
+      data: addCommentBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddCommentMutationOptions = <TError = AxiosError<AddComment400 | AddComment401 | AddComment403 | AddComment404 | AddComment409 | AddComment422 | AddComment500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const getAddCommentMutationOptions = <TError = AddComment400 | AddComment401 | AddComment403 | AddComment404 | AddComment409 | AddComment422 | AddComment500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext> => {
 
 const mutationKey = ['addComment'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -116,7 +112,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addComment>>, {postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}> = (props) => {
           const {postId,data} = props ?? {};
 
-          return  addComment(postId,data,axiosOptions)
+          return  addComment(postId,data,)
         }
 
         
@@ -126,13 +122,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddCommentMutationResult = NonNullable<Awaited<ReturnType<typeof addComment>>>
     export type AddCommentMutationBody = AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree
-    export type AddCommentMutationError = AxiosError<AddComment400 | AddComment401 | AddComment403 | AddComment404 | AddComment409 | AddComment422 | AddComment500>
+    export type AddCommentMutationError = AddComment400 | AddComment401 | AddComment403 | AddComment404 | AddComment409 | AddComment422 | AddComment500
 
     /**
  * @summary add
  */
-export const createAddComment = <TError = AxiosError<AddComment400 | AddComment401 | AddComment403 | AddComment404 | AddComment409 | AddComment422 | AddComment500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const createAddComment = <TError = AddComment400 | AddComment401 | AddComment403 | AddComment404 | AddComment409 | AddComment422 | AddComment500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof addComment>>,
         TError,
@@ -149,15 +145,17 @@ export const createAddComment = <TError = AxiosError<AddComment400 | AddComment4
  * @summary list
  */
 export const listComments = (
-    postId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ListComments200>> => {
-    
-    
-    return axios.get(
-      `http://localhost:4000/comments/${postId}`,options
-    );
-  }
-
+    postId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<ListComments200>(
+      {url: `http://localhost:4000/comments/${postId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -168,16 +166,16 @@ export const getListCommentsQueryKey = (postId?: string,) => {
     }
 
     
-export const getListCommentsQueryOptions = <TData = Awaited<ReturnType<typeof listComments>>, TError = AxiosError<ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500>>(postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listComments>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getListCommentsQueryOptions = <TData = Awaited<ReturnType<typeof listComments>>, TError = ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500>(postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listComments>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListCommentsQueryKey(postId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listComments>>> = ({ signal }) => listComments(postId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listComments>>> = ({ signal }) => listComments(postId, signal);
 
       
 
@@ -187,15 +185,15 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type ListCommentsQueryResult = NonNullable<Awaited<ReturnType<typeof listComments>>>
-export type ListCommentsQueryError = AxiosError<ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500>
+export type ListCommentsQueryError = ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500
 
 
 /**
  * @summary list
  */
 
-export function createListComments<TData = Awaited<ReturnType<typeof listComments>>, TError = AxiosError<ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500>>(
- postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listComments>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function createListComments<TData = Awaited<ReturnType<typeof listComments>>, TError = ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500>(
+ postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listComments>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -216,15 +214,17 @@ export function createListComments<TData = Awaited<ReturnType<typeof listComment
  * @summary show
  */
 export const getCommentsShowByCommentId = (
-    commentId: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetCommentsShowByCommentId200>> => {
-    
-    
-    return axios.get(
-      `http://localhost:4000/comments/show/${commentId}`,options
-    );
-  }
-
+    commentId: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetCommentsShowByCommentId200>(
+      {url: `http://localhost:4000/comments/show/${commentId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -235,16 +235,16 @@ export const getGetCommentsShowByCommentIdQueryKey = (commentId?: number,) => {
     }
 
     
-export const getGetCommentsShowByCommentIdQueryOptions = <TData = Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError = AxiosError<GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500>>(commentId: number, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCommentsShowByCommentIdQueryOptions = <TData = Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError = GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500>(commentId: number, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCommentsShowByCommentIdQueryKey(commentId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCommentsShowByCommentId>>> = ({ signal }) => getCommentsShowByCommentId(commentId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCommentsShowByCommentId>>> = ({ signal }) => getCommentsShowByCommentId(commentId, signal);
 
       
 
@@ -254,15 +254,15 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCommentsShowByCommentIdQueryResult = NonNullable<Awaited<ReturnType<typeof getCommentsShowByCommentId>>>
-export type GetCommentsShowByCommentIdQueryError = AxiosError<GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500>
+export type GetCommentsShowByCommentIdQueryError = GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500
 
 
 /**
  * @summary show
  */
 
-export function createGetCommentsShowByCommentId<TData = Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError = AxiosError<GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500>>(
- commentId: number, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function createGetCommentsShowByCommentId<TData = Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError = GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500>(
+ commentId: number, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -284,28 +284,29 @@ export function createGetCommentsShowByCommentId<TData = Awaited<ReturnType<type
  */
 export const patchCommentsByCommentId = (
     commentId: number,
-    patchCommentsByCommentIdBody: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PatchCommentsByCommentId200>> => {
-    
-    
-    return axios.patch(
-      `http://localhost:4000/comments/${commentId}`,
-      patchCommentsByCommentIdBody,options
-    );
-  }
+    patchCommentsByCommentIdBody: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree,
+ ) => {
+      
+      
+      return customInstance<PatchCommentsByCommentId200>(
+      {url: `http://localhost:4000/comments/${commentId}`, method: 'PATCH',
+      data: patchCommentsByCommentIdBody
+    },
+      );
+    }
+  
 
 
-
-export const getPatchCommentsByCommentIdMutationOptions = <TError = AxiosError<PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof patchCommentsByCommentId>>, TError,{commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const getPatchCommentsByCommentIdMutationOptions = <TError = PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof patchCommentsByCommentId>>, TError,{commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof patchCommentsByCommentId>>, TError,{commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}, TContext> => {
 
 const mutationKey = ['patchCommentsByCommentId'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -313,7 +314,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof patchCommentsByCommentId>>, {commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}> = (props) => {
           const {commentId,data} = props ?? {};
 
-          return  patchCommentsByCommentId(commentId,data,axiosOptions)
+          return  patchCommentsByCommentId(commentId,data,)
         }
 
         
@@ -323,13 +324,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type PatchCommentsByCommentIdMutationResult = NonNullable<Awaited<ReturnType<typeof patchCommentsByCommentId>>>
     export type PatchCommentsByCommentIdMutationBody = PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree
-    export type PatchCommentsByCommentIdMutationError = AxiosError<PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500>
+    export type PatchCommentsByCommentIdMutationError = PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500
 
     /**
  * @summary update
  */
-export const createPatchCommentsByCommentId = <TError = AxiosError<PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof patchCommentsByCommentId>>, TError,{commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const createPatchCommentsByCommentId = <TError = PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof patchCommentsByCommentId>>, TError,{commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof patchCommentsByCommentId>>,
         TError,
@@ -346,27 +347,28 @@ export const createPatchCommentsByCommentId = <TError = AxiosError<PatchComments
  * @summary remove
  */
 export const deleteCommentsByCommentId = (
-    commentId: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<DeleteCommentsByCommentId200>> => {
-    
-    
-    return axios.delete(
-      `http://localhost:4000/comments/${commentId}`,options
-    );
-  }
+    commentId: number,
+ ) => {
+      
+      
+      return customInstance<DeleteCommentsByCommentId200>(
+      {url: `http://localhost:4000/comments/${commentId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteCommentsByCommentIdMutationOptions = <TError = AxiosError<DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, TError,{commentId: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteCommentsByCommentIdMutationOptions = <TError = DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, TError,{commentId: number}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, TError,{commentId: number}, TContext> => {
 
 const mutationKey = ['deleteCommentsByCommentId'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -374,7 +376,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, {commentId: number}> = (props) => {
           const {commentId} = props ?? {};
 
-          return  deleteCommentsByCommentId(commentId,axiosOptions)
+          return  deleteCommentsByCommentId(commentId,)
         }
 
         
@@ -384,13 +386,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteCommentsByCommentIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCommentsByCommentId>>>
     
-    export type DeleteCommentsByCommentIdMutationError = AxiosError<DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500>
+    export type DeleteCommentsByCommentIdMutationError = DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500
 
     /**
  * @summary remove
  */
-export const createDeleteCommentsByCommentId = <TError = AxiosError<DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, TError,{commentId: number}, TContext>, axios?: AxiosRequestConfig}
+export const createDeleteCommentsByCommentId = <TError = DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, TError,{commentId: number}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof deleteCommentsByCommentId>>,
         TError,

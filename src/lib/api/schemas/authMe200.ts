@@ -8,7 +8,7 @@
 import type { AuthMe200Data } from './authMe200Data';
 
 export type AuthMe200 = {
-  success: boolean;
+  success: true;
   message: string;
   data: AuthMe200Data;
 };

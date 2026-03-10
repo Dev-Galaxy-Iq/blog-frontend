@@ -8,7 +8,7 @@
 import type { RemovePost200Data } from './removePost200Data';
 
 export type RemovePost200 = {
-  success: boolean;
+  success: true;
   message: string;
   data: RemovePost200Data;
 };

@@ -21,13 +21,6 @@ import type {
   QueryKey
 } from '@tanstack/svelte-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   AddPost200,
   AddPost400,
@@ -78,6 +71,7 @@ import type {
   UpdatePostBodyTwo
 } from '.././schemas';
 
+import { customInstance } from '../../custom-instance';
 
 
 
@@ -87,28 +81,30 @@ import type {
  * @summary add
  */
 export const addPost = (
-    addPostBody: AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AddPost200>> => {
-    
-    
-    return axios.post(
-      `http://localhost:4000/posts/add`,
-      addPostBody,options
-    );
-  }
+    addPostBody: AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<AddPost200>(
+      {url: `http://localhost:4000/posts/add`, method: 'POST',
+      data: addPostBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddPostMutationOptions = <TError = AxiosError<AddPost400 | AddPost401 | AddPost403 | AddPost404 | AddPost409 | AddPost422 | AddPost500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addPost>>, TError,{data: AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const getAddPostMutationOptions = <TError = AddPost400 | AddPost401 | AddPost403 | AddPost404 | AddPost409 | AddPost422 | AddPost500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addPost>>, TError,{data: AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof addPost>>, TError,{data: AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree}, TContext> => {
 
 const mutationKey = ['addPost'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -116,7 +112,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addPost>>, {data: AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree}> = (props) => {
           const {data} = props ?? {};
 
-          return  addPost(data,axiosOptions)
+          return  addPost(data,)
         }
 
         
@@ -126,13 +122,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddPostMutationResult = NonNullable<Awaited<ReturnType<typeof addPost>>>
     export type AddPostMutationBody = AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree
-    export type AddPostMutationError = AxiosError<AddPost400 | AddPost401 | AddPost403 | AddPost404 | AddPost409 | AddPost422 | AddPost500>
+    export type AddPostMutationError = AddPost400 | AddPost401 | AddPost403 | AddPost404 | AddPost409 | AddPost422 | AddPost500
 
     /**
  * @summary add
  */
-export const createAddPost = <TError = AxiosError<AddPost400 | AddPost401 | AddPost403 | AddPost404 | AddPost409 | AddPost422 | AddPost500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addPost>>, TError,{data: AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const createAddPost = <TError = AddPost400 | AddPost401 | AddPost403 | AddPost404 | AddPost409 | AddPost422 | AddPost500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addPost>>, TError,{data: AddPostBodyOne | AddPostBodyTwo | AddPostBodyThree}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof addPost>>,
         TError,
@@ -149,17 +145,18 @@ export const createAddPost = <TError = AxiosError<AddPost400 | AddPost401 | AddP
  * @summary list
  */
 export const listPosts = (
-    params: ListPostsParams, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ListPosts200>> => {
-    
-    
-    return axios.get(
-      `http://localhost:4000/posts/`,{
-    ...options,
-        params: {...params, ...options?.params},}
-    );
-  }
-
+    params: ListPostsParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<ListPosts200>(
+      {url: `http://localhost:4000/posts/`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
 
 
 
@@ -170,16 +167,16 @@ export const getListPostsQueryKey = (params?: ListPostsParams,) => {
     }
 
     
-export const getListPostsQueryOptions = <TData = Awaited<ReturnType<typeof listPosts>>, TError = AxiosError<ListPosts400 | ListPosts401 | ListPosts403 | ListPosts404 | ListPosts409 | ListPosts422 | ListPosts500>>(params: ListPostsParams, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listPosts>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getListPostsQueryOptions = <TData = Awaited<ReturnType<typeof listPosts>>, TError = ListPosts400 | ListPosts401 | ListPosts403 | ListPosts404 | ListPosts409 | ListPosts422 | ListPosts500>(params: ListPostsParams, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listPosts>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListPostsQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listPosts>>> = ({ signal }) => listPosts(params, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listPosts>>> = ({ signal }) => listPosts(params, signal);
 
       
 
@@ -189,15 +186,15 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type ListPostsQueryResult = NonNullable<Awaited<ReturnType<typeof listPosts>>>
-export type ListPostsQueryError = AxiosError<ListPosts400 | ListPosts401 | ListPosts403 | ListPosts404 | ListPosts409 | ListPosts422 | ListPosts500>
+export type ListPostsQueryError = ListPosts400 | ListPosts401 | ListPosts403 | ListPosts404 | ListPosts409 | ListPosts422 | ListPosts500
 
 
 /**
  * @summary list
  */
 
-export function createListPosts<TData = Awaited<ReturnType<typeof listPosts>>, TError = AxiosError<ListPosts400 | ListPosts401 | ListPosts403 | ListPosts404 | ListPosts409 | ListPosts422 | ListPosts500>>(
- params: ListPostsParams, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listPosts>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function createListPosts<TData = Awaited<ReturnType<typeof listPosts>>, TError = ListPosts400 | ListPosts401 | ListPosts403 | ListPosts404 | ListPosts409 | ListPosts422 | ListPosts500>(
+ params: ListPostsParams, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listPosts>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -218,15 +215,17 @@ export function createListPosts<TData = Awaited<ReturnType<typeof listPosts>>, T
  * @summary show
  */
 export const showPost = (
-    postId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ShowPost200>> => {
-    
-    
-    return axios.get(
-      `http://localhost:4000/posts/${postId}`,options
-    );
-  }
-
+    postId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<ShowPost200>(
+      {url: `http://localhost:4000/posts/${postId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -237,16 +236,16 @@ export const getShowPostQueryKey = (postId?: string,) => {
     }
 
     
-export const getShowPostQueryOptions = <TData = Awaited<ReturnType<typeof showPost>>, TError = AxiosError<ShowPost400 | ShowPost401 | ShowPost403 | ShowPost404 | ShowPost409 | ShowPost422 | ShowPost500>>(postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof showPost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getShowPostQueryOptions = <TData = Awaited<ReturnType<typeof showPost>>, TError = ShowPost400 | ShowPost401 | ShowPost403 | ShowPost404 | ShowPost409 | ShowPost422 | ShowPost500>(postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof showPost>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getShowPostQueryKey(postId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof showPost>>> = ({ signal }) => showPost(postId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof showPost>>> = ({ signal }) => showPost(postId, signal);
 
       
 
@@ -256,15 +255,15 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type ShowPostQueryResult = NonNullable<Awaited<ReturnType<typeof showPost>>>
-export type ShowPostQueryError = AxiosError<ShowPost400 | ShowPost401 | ShowPost403 | ShowPost404 | ShowPost409 | ShowPost422 | ShowPost500>
+export type ShowPostQueryError = ShowPost400 | ShowPost401 | ShowPost403 | ShowPost404 | ShowPost409 | ShowPost422 | ShowPost500
 
 
 /**
  * @summary show
  */
 
-export function createShowPost<TData = Awaited<ReturnType<typeof showPost>>, TError = AxiosError<ShowPost400 | ShowPost401 | ShowPost403 | ShowPost404 | ShowPost409 | ShowPost422 | ShowPost500>>(
- postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof showPost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function createShowPost<TData = Awaited<ReturnType<typeof showPost>>, TError = ShowPost400 | ShowPost401 | ShowPost403 | ShowPost404 | ShowPost409 | ShowPost422 | ShowPost500>(
+ postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof showPost>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -286,28 +285,29 @@ export function createShowPost<TData = Awaited<ReturnType<typeof showPost>>, TEr
  */
 export const updatePost = (
     postId: string,
-    updatePostBody: UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UpdatePost200>> => {
-    
-    
-    return axios.patch(
-      `http://localhost:4000/posts/${postId}`,
-      updatePostBody,options
-    );
-  }
+    updatePostBody: UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree,
+ ) => {
+      
+      
+      return customInstance<UpdatePost200>(
+      {url: `http://localhost:4000/posts/${postId}`, method: 'PATCH',
+      data: updatePostBody
+    },
+      );
+    }
+  
 
 
-
-export const getUpdatePostMutationOptions = <TError = AxiosError<UpdatePost400 | UpdatePost401 | UpdatePost403 | UpdatePost404 | UpdatePost409 | UpdatePost422 | UpdatePost500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof updatePost>>, TError,{postId: string;data: UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdatePostMutationOptions = <TError = UpdatePost400 | UpdatePost401 | UpdatePost403 | UpdatePost404 | UpdatePost409 | UpdatePost422 | UpdatePost500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof updatePost>>, TError,{postId: string;data: UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof updatePost>>, TError,{postId: string;data: UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree}, TContext> => {
 
 const mutationKey = ['updatePost'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -315,7 +315,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePost>>, {postId: string;data: UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree}> = (props) => {
           const {postId,data} = props ?? {};
 
-          return  updatePost(postId,data,axiosOptions)
+          return  updatePost(postId,data,)
         }
 
         
@@ -325,13 +325,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdatePostMutationResult = NonNullable<Awaited<ReturnType<typeof updatePost>>>
     export type UpdatePostMutationBody = UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree
-    export type UpdatePostMutationError = AxiosError<UpdatePost400 | UpdatePost401 | UpdatePost403 | UpdatePost404 | UpdatePost409 | UpdatePost422 | UpdatePost500>
+    export type UpdatePostMutationError = UpdatePost400 | UpdatePost401 | UpdatePost403 | UpdatePost404 | UpdatePost409 | UpdatePost422 | UpdatePost500
 
     /**
  * @summary update
  */
-export const createUpdatePost = <TError = AxiosError<UpdatePost400 | UpdatePost401 | UpdatePost403 | UpdatePost404 | UpdatePost409 | UpdatePost422 | UpdatePost500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof updatePost>>, TError,{postId: string;data: UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const createUpdatePost = <TError = UpdatePost400 | UpdatePost401 | UpdatePost403 | UpdatePost404 | UpdatePost409 | UpdatePost422 | UpdatePost500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof updatePost>>, TError,{postId: string;data: UpdatePostBodyOne | UpdatePostBodyTwo | UpdatePostBodyThree}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof updatePost>>,
         TError,
@@ -348,27 +348,28 @@ export const createUpdatePost = <TError = AxiosError<UpdatePost400 | UpdatePost4
  * @summary remove
  */
 export const removePost = (
-    postId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<RemovePost200>> => {
-    
-    
-    return axios.delete(
-      `http://localhost:4000/posts/${postId}`,options
-    );
-  }
+    postId: string,
+ ) => {
+      
+      
+      return customInstance<RemovePost200>(
+      {url: `http://localhost:4000/posts/${postId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getRemovePostMutationOptions = <TError = AxiosError<RemovePost400 | RemovePost401 | RemovePost403 | RemovePost404 | RemovePost409 | RemovePost422 | RemovePost500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof removePost>>, TError,{postId: string}, TContext>, axios?: AxiosRequestConfig}
+export const getRemovePostMutationOptions = <TError = RemovePost400 | RemovePost401 | RemovePost403 | RemovePost404 | RemovePost409 | RemovePost422 | RemovePost500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof removePost>>, TError,{postId: string}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof removePost>>, TError,{postId: string}, TContext> => {
 
 const mutationKey = ['removePost'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -376,7 +377,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof removePost>>, {postId: string}> = (props) => {
           const {postId} = props ?? {};
 
-          return  removePost(postId,axiosOptions)
+          return  removePost(postId,)
         }
 
         
@@ -386,13 +387,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type RemovePostMutationResult = NonNullable<Awaited<ReturnType<typeof removePost>>>
     
-    export type RemovePostMutationError = AxiosError<RemovePost400 | RemovePost401 | RemovePost403 | RemovePost404 | RemovePost409 | RemovePost422 | RemovePost500>
+    export type RemovePostMutationError = RemovePost400 | RemovePost401 | RemovePost403 | RemovePost404 | RemovePost409 | RemovePost422 | RemovePost500
 
     /**
  * @summary remove
  */
-export const createRemovePost = <TError = AxiosError<RemovePost400 | RemovePost401 | RemovePost403 | RemovePost404 | RemovePost409 | RemovePost422 | RemovePost500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof removePost>>, TError,{postId: string}, TContext>, axios?: AxiosRequestConfig}
+export const createRemovePost = <TError = RemovePost400 | RemovePost401 | RemovePost403 | RemovePost404 | RemovePost409 | RemovePost422 | RemovePost500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof removePost>>, TError,{postId: string}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof removePost>>,
         TError,

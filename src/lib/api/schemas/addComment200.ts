@@ -8,7 +8,7 @@
 import type { AddComment200Data } from './addComment200Data';
 
 export type AddComment200 = {
-  success: boolean;
+  success: true;
   message: string;
   data: AddComment200Data;
 };

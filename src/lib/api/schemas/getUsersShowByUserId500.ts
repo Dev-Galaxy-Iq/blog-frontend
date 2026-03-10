@@ -9,5 +9,4 @@
 export type GetUsersShowByUserId500 = {
   success: false;
   message: string;
-  data: null;
 };

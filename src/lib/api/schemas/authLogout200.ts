@@ -7,7 +7,7 @@
  */
 
 export type AuthLogout200 = {
-  success: boolean;
+  success: true;
   message: string;
   data: null;
 };

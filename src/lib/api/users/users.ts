@@ -17,13 +17,6 @@ import type {
   QueryKey
 } from '@tanstack/svelte-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   GetUsersShowByUserId200,
   GetUsersShowByUserId400,
@@ -35,6 +28,7 @@ import type {
   GetUsersShowByUserId500
 } from '.././schemas';
 
+import { customInstance } from '../../custom-instance';
 
 
 
@@ -44,15 +38,17 @@ import type {
  * @summary show
  */
 export const getUsersShowByUserId = (
-    userId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetUsersShowByUserId200>> => {
-    
-    
-    return axios.get(
-      `http://localhost:4000/users/show/${userId}`,options
-    );
-  }
-
+    userId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<GetUsersShowByUserId200>(
+      {url: `http://localhost:4000/users/show/${userId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -63,16 +59,16 @@ export const getGetUsersShowByUserIdQueryKey = (userId?: string,) => {
     }
 
     
-export const getGetUsersShowByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof getUsersShowByUserId>>, TError = AxiosError<GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500>>(userId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getUsersShowByUserId>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetUsersShowByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof getUsersShowByUserId>>, TError = GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500>(userId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getUsersShowByUserId>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetUsersShowByUserIdQueryKey(userId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersShowByUserId>>> = ({ signal }) => getUsersShowByUserId(userId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersShowByUserId>>> = ({ signal }) => getUsersShowByUserId(userId, signal);
 
       
 
@@ -82,15 +78,15 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetUsersShowByUserIdQueryResult = NonNullable<Awaited<ReturnType<typeof getUsersShowByUserId>>>
-export type GetUsersShowByUserIdQueryError = AxiosError<GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500>
+export type GetUsersShowByUserIdQueryError = GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500
 
 
 /**
  * @summary show
  */
 
-export function createGetUsersShowByUserId<TData = Awaited<ReturnType<typeof getUsersShowByUserId>>, TError = AxiosError<GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500>>(
- userId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getUsersShowByUserId>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function createGetUsersShowByUserId<TData = Awaited<ReturnType<typeof getUsersShowByUserId>>, TError = GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500>(
+ userId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getUsersShowByUserId>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

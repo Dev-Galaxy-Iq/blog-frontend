@@ -9,5 +9,4 @@
 export type ListPosts409 = {
   success: false;
   message: string;
-  data: null;
 };

@@ -9,5 +9,4 @@
 export type PatchCommentsByCommentId400 = {
   success: false;
   message: string;
-  data: null;
 };

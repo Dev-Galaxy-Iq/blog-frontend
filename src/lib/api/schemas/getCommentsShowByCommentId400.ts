@@ -9,5 +9,4 @@
 export type GetCommentsShowByCommentId400 = {
   success: false;
   message: string;
-  data: null;
 };

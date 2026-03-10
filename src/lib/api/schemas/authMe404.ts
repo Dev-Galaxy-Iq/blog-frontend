@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.0.0
  */
 
-export type AddPost422 = {
+export type AuthMe404 = {
   success: false;
   message: string;
 };

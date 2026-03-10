@@ -8,7 +8,7 @@
 import type { AddPost200Data } from './addPost200Data';
 
 export type AddPost200 = {
-  success: boolean;
+  success: true;
   message: string;
   data: AddPost200Data;
 };

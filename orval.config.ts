@@ -10,7 +10,13 @@ export default defineConfig({
       target: 'src/lib/api/index.ts',
       client: 'svelte-query',
       baseUrl: "http://localhost:4000/",
-      schemas: "src/lib/api/schemas"
+      schemas: "src/lib/api/schemas",
+      override: {
+        mutator: {
+          path: "./src/lib/custom-instance.ts",
+          name: "customInstance"
+        }
+      }
     },
   },
   APIZod: {

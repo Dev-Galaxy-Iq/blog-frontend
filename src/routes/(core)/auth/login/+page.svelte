@@ -20,7 +20,7 @@
 		<Input
 			id="email"
 			type="email"
-			defaultvalue={'test@gmail.com'}
+			value={'test@gmail.com'}
 			placeholder="email"
 			name="email"
 			autocomplete="off"
@@ -37,7 +37,7 @@
 				placeholder="password"
 				name="password"
 				autocomplete="off"
-				defaultvalue={'123456789'}
+				value={'123456789'}
 			/>
 			<InputGroupButton onclick={() => (showPass = !showPass)}>
 				{#if showPass}
@@ -50,6 +50,10 @@
 		{#if form?.errors?.password}
 			<p class="text-sm text-destructive">{form.errors.password[0]}</p>
 		{/if}
+		{#if form?.error}
+			<p class="text-sm text-destructive">{form.error}</p>
+		{/if}
+		<a class="mt-2 text-center text-sm underline" href="/auth/signup"> or signup instead </a>
 		<Button class="mt-3 w-max" type="submit">Submit</Button>
 	</form>
 </div>

@@ -9,5 +9,4 @@
 export type AuthLogin500 = {
   success: false;
   message: string;
-  data: null;
 };

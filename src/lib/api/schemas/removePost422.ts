@@ -9,5 +9,4 @@
 export type RemovePost422 = {
   success: false;
   message: string;
-  data: null;
 };

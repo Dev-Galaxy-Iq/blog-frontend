@@ -9,5 +9,4 @@
 export type RemovePost404 = {
   success: false;
   message: string;
-  data: null;
 };

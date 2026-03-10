@@ -9,5 +9,4 @@
 export type UpdatePost422 = {
   success: false;
   message: string;
-  data: null;
 };

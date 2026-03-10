@@ -9,5 +9,4 @@
 export type ShowPost422 = {
   success: false;
   message: string;
-  data: null;
 };

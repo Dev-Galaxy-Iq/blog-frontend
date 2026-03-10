@@ -9,5 +9,4 @@
 export type GetUsersShowByUserId404 = {
   success: false;
   message: string;
-  data: null;
 };

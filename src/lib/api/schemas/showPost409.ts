@@ -9,5 +9,4 @@
 export type ShowPost409 = {
   success: false;
   message: string;
-  data: null;
 };

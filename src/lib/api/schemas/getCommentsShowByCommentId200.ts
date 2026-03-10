@@ -8,7 +8,7 @@
 import type { GetCommentsShowByCommentId200Data } from './getCommentsShowByCommentId200Data';
 
 export type GetCommentsShowByCommentId200 = {
-  success: boolean;
+  success: true;
   message: string;
   data: GetCommentsShowByCommentId200Data;
 };

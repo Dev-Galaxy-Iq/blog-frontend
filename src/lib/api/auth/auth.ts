@@ -21,13 +21,6 @@ import type {
   QueryKey
 } from '@tanstack/svelte-query';
 
-import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
 import type {
   AuthLogin200,
   AuthLogin400,
@@ -42,6 +35,13 @@ import type {
   AuthLoginBodyTwo,
   AuthLogout200,
   AuthMe200,
+  AuthMe400,
+  AuthMe401,
+  AuthMe403,
+  AuthMe404,
+  AuthMe409,
+  AuthMe422,
+  AuthMe500,
   AuthRefreshTokens200,
   AuthRegister200,
   AuthRegisterBodyOne,
@@ -49,6 +49,7 @@ import type {
   AuthRegisterBodyTwo
 } from '.././schemas';
 
+import { customInstance } from '../../custom-instance';
 
 
 
@@ -58,28 +59,30 @@ import type {
  * @summary login
  */
 export const authLogin = (
-    authLoginBody: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AuthLogin200>> => {
-    
-    
-    return axios.post(
-      `http://localhost:4000/auth/login`,
-      authLoginBody,options
-    );
-  }
+    authLoginBody: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<AuthLogin200>(
+      {url: `http://localhost:4000/auth/login`, method: 'POST',
+      data: authLoginBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAuthLoginMutationOptions = <TError = AxiosError<AuthLogin400 | AuthLogin401 | AuthLogin403 | AuthLogin404 | AuthLogin409 | AuthLogin422 | AuthLogin500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const getAuthLoginMutationOptions = <TError = AuthLogin400 | AuthLogin401 | AuthLogin403 | AuthLogin404 | AuthLogin409 | AuthLogin422 | AuthLogin500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext> => {
 
 const mutationKey = ['authLogin'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -87,7 +90,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof authLogin>>, {data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}> = (props) => {
           const {data} = props ?? {};
 
-          return  authLogin(data,axiosOptions)
+          return  authLogin(data,)
         }
 
         
@@ -97,13 +100,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AuthLoginMutationResult = NonNullable<Awaited<ReturnType<typeof authLogin>>>
     export type AuthLoginMutationBody = AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree
-    export type AuthLoginMutationError = AxiosError<AuthLogin400 | AuthLogin401 | AuthLogin403 | AuthLogin404 | AuthLogin409 | AuthLogin422 | AuthLogin500>
+    export type AuthLoginMutationError = AuthLogin400 | AuthLogin401 | AuthLogin403 | AuthLogin404 | AuthLogin409 | AuthLogin422 | AuthLogin500
 
     /**
  * @summary login
  */
-export const createAuthLogin = <TError = AxiosError<AuthLogin400 | AuthLogin401 | AuthLogin403 | AuthLogin404 | AuthLogin409 | AuthLogin422 | AuthLogin500>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const createAuthLogin = <TError = AuthLogin400 | AuthLogin401 | AuthLogin403 | AuthLogin404 | AuthLogin409 | AuthLogin422 | AuthLogin500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof authLogin>>,
         TError,
@@ -120,28 +123,30 @@ export const createAuthLogin = <TError = AxiosError<AuthLogin400 | AuthLogin401 
  * @summary register
  */
 export const authRegister = (
-    authRegisterBody: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AuthRegister200>> => {
-    
-    
-    return axios.post(
-      `http://localhost:4000/auth/register`,
-      authRegisterBody,options
-    );
-  }
+    authRegisterBody: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<AuthRegister200>(
+      {url: `http://localhost:4000/auth/register`, method: 'POST',
+      data: authRegisterBody, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAuthRegisterMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const getAuthRegisterMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext> => {
 
 const mutationKey = ['authRegister'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -149,7 +154,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof authRegister>>, {data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}> = (props) => {
           const {data} = props ?? {};
 
-          return  authRegister(data,axiosOptions)
+          return  authRegister(data,)
         }
 
         
@@ -159,13 +164,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AuthRegisterMutationResult = NonNullable<Awaited<ReturnType<typeof authRegister>>>
     export type AuthRegisterMutationBody = AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree
-    export type AuthRegisterMutationError = AxiosError<unknown>
+    export type AuthRegisterMutationError = unknown
 
     /**
  * @summary register
  */
-export const createAuthRegister = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext>, axios?: AxiosRequestConfig}
+export const createAuthRegister = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof authRegister>>,
         TError,
@@ -182,27 +187,29 @@ export const createAuthRegister = <TError = AxiosError<unknown>,
  * @summary me
  */
 export const authMe = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AuthMe200>> => {
     
-    
-    return axios.post(
-      `http://localhost:4000/auth/me`,undefined,options
-    );
-  }
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<AuthMe200>(
+      {url: `http://localhost:4000/auth/me`, method: 'POST', signal
+    },
+      );
+    }
+  
 
 
-
-export const getAuthMeMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authMe>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const getAuthMeMutationOptions = <TError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authMe>>, TError,void, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof authMe>>, TError,void, TContext> => {
 
 const mutationKey = ['authMe'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -210,7 +217,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof authMe>>, void> = () => {
           
 
-          return  authMe(axiosOptions)
+          return  authMe()
         }
 
         
@@ -220,13 +227,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AuthMeMutationResult = NonNullable<Awaited<ReturnType<typeof authMe>>>
     
-    export type AuthMeMutationError = AxiosError<unknown>
+    export type AuthMeMutationError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500
 
     /**
  * @summary me
  */
-export const createAuthMe = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authMe>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const createAuthMe = <TError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authMe>>, TError,void, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof authMe>>,
         TError,
@@ -243,27 +250,29 @@ export const createAuthMe = <TError = AxiosError<unknown>,
  * @summary Logout
  */
 export const authLogout = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AuthLogout200>> => {
     
-    
-    return axios.post(
-      `http://localhost:4000/auth/logout`,undefined,options
-    );
-  }
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<AuthLogout200>(
+      {url: `http://localhost:4000/auth/logout`, method: 'POST', signal
+    },
+      );
+    }
+  
 
 
-
-export const getAuthLogoutMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogout>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const getAuthLogoutMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogout>>, TError,void, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof authLogout>>, TError,void, TContext> => {
 
 const mutationKey = ['authLogout'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -271,7 +280,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof authLogout>>, void> = () => {
           
 
-          return  authLogout(axiosOptions)
+          return  authLogout()
         }
 
         
@@ -281,13 +290,13 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AuthLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof authLogout>>>
     
-    export type AuthLogoutMutationError = AxiosError<unknown>
+    export type AuthLogoutMutationError = unknown
 
     /**
  * @summary Logout
  */
-export const createAuthLogout = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogout>>, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const createAuthLogout = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogout>>, TError,void, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof authLogout>>,
         TError,
@@ -304,15 +313,17 @@ export const createAuthLogout = <TError = AxiosError<unknown>,
  * @summary refresh
  */
 export const authRefreshTokens = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AuthRefreshTokens200>> => {
     
-    
-    return axios.get(
-      `http://localhost:4000/auth/refresh`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<AuthRefreshTokens200>(
+      {url: `http://localhost:4000/auth/refresh`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 
 
@@ -323,16 +334,16 @@ export const getAuthRefreshTokensQueryKey = () => {
     }
 
     
-export const getAuthRefreshTokensQueryOptions = <TData = Awaited<ReturnType<typeof authRefreshTokens>>, TError = AxiosError<unknown>>( options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getAuthRefreshTokensQueryOptions = <TData = Awaited<ReturnType<typeof authRefreshTokens>>, TError = unknown>( options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getAuthRefreshTokensQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof authRefreshTokens>>> = ({ signal }) => authRefreshTokens({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authRefreshTokens>>> = ({ signal }) => authRefreshTokens(signal);
 
       
 
@@ -342,15 +353,15 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type AuthRefreshTokensQueryResult = NonNullable<Awaited<ReturnType<typeof authRefreshTokens>>>
-export type AuthRefreshTokensQueryError = AxiosError<unknown>
+export type AuthRefreshTokensQueryError = unknown
 
 
 /**
  * @summary refresh
  */
 
-export function createAuthRefreshTokens<TData = Awaited<ReturnType<typeof authRefreshTokens>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function createAuthRefreshTokens<TData = Awaited<ReturnType<typeof authRefreshTokens>>, TError = unknown>(
+  options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

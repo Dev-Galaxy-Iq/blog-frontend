@@ -9,5 +9,4 @@
 export type AddPost403 = {
   success: false;
   message: string;
-  data: null;
 };

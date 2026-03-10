@@ -9,5 +9,4 @@
 export type AuthLogin403 = {
   success: false;
   message: string;
-  data: null;
 };

@@ -8,7 +8,7 @@
 import type { ListPosts200DataItem } from './listPosts200DataItem';
 
 export type ListPosts200 = {
-  success: boolean;
+  success: true;
   message: string;
   data: ListPosts200DataItem[];
 };

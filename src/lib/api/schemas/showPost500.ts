@@ -9,5 +9,4 @@
 export type ShowPost500 = {
   success: false;
   message: string;
-  data: null;
 };

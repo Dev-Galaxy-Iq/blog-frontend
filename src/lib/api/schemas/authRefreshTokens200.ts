@@ -7,7 +7,7 @@
  */
 
 export type AuthRefreshTokens200 = {
-  success: boolean;
+  success: true;
   message: string;
   data: null;
 };
