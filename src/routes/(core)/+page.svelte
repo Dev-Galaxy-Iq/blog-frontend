@@ -1,17 +1,20 @@
 <script lang="ts">
-	import { createAuthMe } from '$lib/api/auth/auth';
+	import AddNewPost from '$lib/components/custom/home/addNewPost.svelte';
+	import CardContent from '$lib/components/ui/card/card-content.svelte';
+	import CardDescription from '$lib/components/ui/card/card-description.svelte';
+	import CardHeader from '$lib/components/ui/card/card-header.svelte';
+	import CardTitle from '$lib/components/ui/card/card-title.svelte';
+	import Card from '$lib/components/ui/card/card.svelte';
 
 	const { data } = $props();
-
-	const me = createAuthMe();
 </script>
 
-<div>
-	hello {data.data?.name}
-	<br />
-	{#if me.isLoading}
-		<div>loading...</div>
-	{:else}
-		<div>{me.data?.data.data.name}</div>
-	{/if}
-</div>
+<AddNewPost me={data.me} />
+
+<Card>
+	<CardHeader>
+		<CardTitle>helello</CardTitle>
+		<CardDescription>helello</CardDescription>
+	</CardHeader>
+	<CardContent>hello</CardContent>
+</Card>
