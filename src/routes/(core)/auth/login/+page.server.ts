@@ -21,15 +21,15 @@ export const actions: Actions = {
     }
 
     try {
-      const logged = await authLogin({
+      const loginRes = await authLogin({
         email: res.data.email,
         password: res.data.password,
       })
 
-      cookies.set("accessToken", logged.data.data.accessToken, {
+      cookies.set("accessToken", loginRes.data.data.accessToken, {
         path: "/",
       })
-      cookies.set("refreshToken", logged.data.data.refreshToken, {
+      cookies.set("refreshToken", loginRes.data.data.refreshToken, {
         path: "/",
       })
 
