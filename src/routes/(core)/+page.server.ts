@@ -1,17 +1,21 @@
 import { authMe } from '$lib/api/auth/auth.js';
-import { addPost } from '$lib/api/posts/posts.js';
-import { fail, type Actions } from '@sveltejs/kit';
+import { addPost, listPosts, removePost } from '$lib/api/posts/posts.js';
+import { error, fail, type Actions } from '@sveltejs/kit';
 
-export const load = async ({ }) => {
-
+export const load = async () => {
   try {
-    const me = await authMe()
+    const [me, posts] = await Promise.all([
+      authMe(),
+      listPosts({
+        page: 1, size: 100
+      })
+    ])
     return {
-      data: me.data.data
+      me: me.data.data,  // not `user`
+      posts: posts.data.data
     }
-  }
-  catch (error) {
-    console.log(error);
+  } catch (err) {
+    return error(400, "error while adding new post")
   }
 }
 
@@ -33,14 +37,36 @@ export const actions: Actions = {
       }
     })
 
-
-
     try {
       const res = await addPost({ title, content })
-
       return { newPost: res.data.data }
     } catch (error) {
-      return fail(400, "error while adding new post")
+      return fail(400, {
+        error: "failed"
+      })
+    }
+  },
+
+
+  removePost: async ({ request }) => {
+    const formData = await request.formData()
+    const postId = formData.get("postId")?.toString()
+
+
+    if (!postId) return fail(400, {
+      error: "missing post id"
+    })
+
+    try {
+      const rmPost = await removePost(postId)
+
+      return {
+        removedPost: rmPost.data.data
+      }
+    } catch (error) {
+      return fail(400, {
+        error: "issue while removing post"
+      })
     }
   }
 }

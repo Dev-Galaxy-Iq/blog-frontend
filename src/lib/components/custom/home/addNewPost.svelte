@@ -17,7 +17,7 @@
 	} = $props();
 </script>
 
-<Card class="p-0">
+<Card class="sticky top-0 left-0 p-0">
 	<CardContent class="p-4">
 		<form use:enhance action="?/addPost" method="POST">
 			<div class="flex gap-2">
