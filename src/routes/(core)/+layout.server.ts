@@ -8,8 +8,6 @@ export const load = async () => {
 
     return { me: res.data.data };
   } catch (e) {
-    console.log(e);
-
     throw error(500, "Unauthorized");
   }
 };

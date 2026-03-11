@@ -1,6 +1,7 @@
 import { authMe } from '$lib/api/auth/auth.js';
 import { addPost, listPosts, removePost } from '$lib/api/posts/posts.js';
 import { error, fail, type Actions } from '@sveltejs/kit';
+import { success } from 'zod';
 
 export const load = async () => {
   try {
@@ -67,6 +68,19 @@ export const actions: Actions = {
       return fail(400, {
         error: "issue while removing post"
       })
+    }
+  },
+
+  logout: async ({ request, cookies }) => {
+    cookies.delete("accessToken", {
+      path: "/"
+    })
+    cookies.delete("refreshToken", {
+      path: "/"
+    })
+
+    return {
+      success: true
     }
   }
 }
