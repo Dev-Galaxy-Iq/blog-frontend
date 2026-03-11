@@ -13,4 +13,4 @@
 	<p>client site => Hello, {meQuery.data?.data.data.name}</p>
 {/if}
 
-<p class="mt-4">server => Hello, {data.name}</p>
+<p class="mt-4">server => Hello, {data.user.name}</p>

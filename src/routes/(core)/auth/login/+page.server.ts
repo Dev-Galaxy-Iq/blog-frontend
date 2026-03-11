@@ -29,7 +29,7 @@ export const actions: Actions = {
       cookies.set("accessToken", logged.data.data.accessToken, {
         path: "/",
       })
-      cookies.set("refreshToken", logged.data.data.accessToken, {
+      cookies.set("refreshToken", logged.data.data.refreshToken, {
         path: "/",
       })
 
