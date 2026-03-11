@@ -1,6 +1,5 @@
 import { authLogin } from "$lib/api/auth/auth"
 import { authLoginBody } from "$lib/api/auth/auth.zod"
-import { parseSetCookie } from "$lib/utils"
 import { fail, redirect, type Actions } from "@sveltejs/kit"
 import { isAxiosError } from "axios"
 import z from "zod"
@@ -27,21 +26,12 @@ export const actions: Actions = {
         password: res.data.password,
       })
 
-      const setCookie = logged.headers['set-cookie'] as string[]
-
-      const parsedCookies = Object.fromEntries(
-        setCookie.map(c => {
-          const [nameVal] = c.split(';')
-          const [name, value] = nameVal.split('=')
-          return [name.trim(), value.trim()]
-        })
-      ) as {
-        access_token: string
-        refresh_token: string
-      }
-
-      cookies.set('access_token', parsedCookies.access_token, { path: '/', httpOnly: true, secure: true, sameSite: 'strict', maxAge: 60 * 15 })
-      cookies.set('refresh_token', parsedCookies.refresh_token, { path: '/', httpOnly: true, secure: true, sameSite: 'strict', maxAge: 60 * 60 * 24 * 7 })
+      cookies.set("accessToken", logged.data.data.accessToken, {
+        path: "/",
+      })
+      cookies.set("refreshToken", logged.data.data.accessToken, {
+        path: "/",
+      })
 
     } catch (err: any) {
       if (isAxiosError(err)) {
@@ -51,6 +41,6 @@ export const actions: Actions = {
       }
     }
 
-    throw redirect(302, "/")
+    // throw redirect(302, "/")
   }
 }

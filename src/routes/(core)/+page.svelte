@@ -1,12 +1,17 @@
 <script lang="ts">
+	import { createAuthMe } from '$lib/api/auth/auth';
+
 	const { data } = $props();
+
+	const me = createAuthMe();
 </script>
 
 <div>
-	<ul>
-		{#each data.data as post}
-			<li>{post.title}</li>
-			<div>post.content</div>
-		{/each}
-	</ul>
+	hello {data.data?.name}
+	<br />
+	{#if me.isLoading}
+		<div>loading...</div>
+	{:else}
+		<div>{me.data?.data.data.name}</div>
+	{/if}
 </div>

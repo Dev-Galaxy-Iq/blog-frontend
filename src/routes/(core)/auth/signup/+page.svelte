@@ -59,9 +59,6 @@
 			name="name"
 			autocomplete="off"
 		/>
-		{#if form?.error}
-			<p class="text-sm text-destructive">{form.error}</p>
-		{/if}
 		<Label for="username">Username</Label>
 		<Input
 			id="username"
@@ -71,6 +68,9 @@
 			name="username"
 			autocomplete="off"
 		/>
+		{#if form?.error}
+			<p class="text-sm text-destructive">{form.error}</p>
+		{/if}
 		<a class="mt-2 text-center text-sm underline" href="/auth/login"> or login instead </a>
 		<Button class="mt-3 w-max" type="submit">Submit</Button>
 	</form>

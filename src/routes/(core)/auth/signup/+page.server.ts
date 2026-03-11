@@ -1,6 +1,6 @@
 import { authLogin, authRegister } from "$lib/api/auth/auth"
 import { authLoginBody, authRegisterBody } from "$lib/api/auth/auth.zod"
-import { fail, type Actions } from "@sveltejs/kit"
+import { fail, redirect, type Actions } from "@sveltejs/kit"
 import { isAxiosError } from "axios"
 import z from "zod"
 
@@ -28,7 +28,6 @@ export const actions: Actions = {
         name: res.data.name,
         username: res.data.username
       })
-      return { data: logged.data.data }
     } catch (err: any) {
       if (isAxiosError(err)) {
         return fail(err.response?.status ?? 400, {
@@ -36,5 +35,7 @@ export const actions: Actions = {
         })
       }
     }
+
+    throw redirect(302, "/auth/login")
   }
 }

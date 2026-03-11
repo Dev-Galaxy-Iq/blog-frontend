@@ -48,6 +48,7 @@
 		"@tanstack/svelte-query": "^6.1.0",
 		"axios": "^1.13.6",
 		"cookie-parser": "^1.4.7",
+		"jwt-decode": "^4.0.0",
 		"zod": "^4.3.6"
 	}
 }

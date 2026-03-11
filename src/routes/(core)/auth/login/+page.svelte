@@ -13,15 +13,7 @@
 </script>
 
 <div class="flex h-dvh items-center justify-center">
-	<form
-		method="POST"
-		use:enhance={() => {
-			return async ({ update }) => {
-				await update();
-			};
-		}}
-		class="flex flex-col gap-2 rounded-2xl border bg-card p-4"
-	>
+	<form method="POST" use:enhance class="flex flex-col gap-2 rounded-2xl border bg-card p-4">
 		<p class="text-2xl font-bold">Login</p>
 
 		<Label for="email">Email Address</Label>

@@ -33,7 +33,6 @@ import type {
   AuthLoginBodyOne,
   AuthLoginBodyThree,
   AuthLoginBodyTwo,
-  AuthLogout200,
   AuthMe200,
   AuthMe400,
   AuthMe401,
@@ -43,6 +42,9 @@ import type {
   AuthMe422,
   AuthMe500,
   AuthRefreshTokens200,
+  AuthRefreshTokensBodyOne,
+  AuthRefreshTokensBodyThree,
+  AuthRefreshTokensBodyTwo,
   AuthRegister200,
   AuthRegisterBodyOne,
   AuthRegisterBodyThree,
@@ -52,6 +54,8 @@ import type {
 import { customInstance } from '../../custom-instance';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
 
 
 /**
@@ -60,7 +64,7 @@ import { customInstance } from '../../custom-instance';
  */
 export const authLogin = (
     authLoginBody: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree,
- signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
@@ -68,21 +72,21 @@ export const authLogin = (
       {url: `http://localhost:4000/auth/login`, method: 'POST',
       data: authLoginBody, signal
     },
-      );
+      options);
     }
   
 
 
 export const getAuthLoginMutationOptions = <TError = AuthLogin400 | AuthLogin401 | AuthLogin403 | AuthLogin404 | AuthLogin409 | AuthLogin422 | AuthLogin500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext>, }
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext> => {
 
 const mutationKey = ['authLogin'];
-const {mutation: mutationOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -90,7 +94,7 @@ const {mutation: mutationOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof authLogin>>, {data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}> = (props) => {
           const {data} = props ?? {};
 
-          return  authLogin(data,)
+          return  authLogin(data,requestOptions)
         }
 
         
@@ -106,7 +110,7 @@ const {mutation: mutationOptions} = options ?
  * @summary login
  */
 export const createAuthLogin = <TError = AuthLogin400 | AuthLogin401 | AuthLogin403 | AuthLogin404 | AuthLogin409 | AuthLogin422 | AuthLogin500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext>, }
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogin>>, TError,{data: AuthLoginBodyOne | AuthLoginBodyTwo | AuthLoginBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof authLogin>>,
         TError,
@@ -124,7 +128,7 @@ export const createAuthLogin = <TError = AuthLogin400 | AuthLogin401 | AuthLogin
  */
 export const authRegister = (
     authRegisterBody: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree,
- signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
@@ -132,21 +136,21 @@ export const authRegister = (
       {url: `http://localhost:4000/auth/register`, method: 'POST',
       data: authRegisterBody, signal
     },
-      );
+      options);
     }
   
 
 
 export const getAuthRegisterMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext>, }
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext> => {
 
 const mutationKey = ['authRegister'];
-const {mutation: mutationOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -154,7 +158,7 @@ const {mutation: mutationOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof authRegister>>, {data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}> = (props) => {
           const {data} = props ?? {};
 
-          return  authRegister(data,)
+          return  authRegister(data,requestOptions)
         }
 
         
@@ -170,7 +174,7 @@ const {mutation: mutationOptions} = options ?
  * @summary register
  */
 export const createAuthRegister = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext>, }
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRegister>>, TError,{data: AuthRegisterBodyOne | AuthRegisterBodyTwo | AuthRegisterBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof authRegister>>,
         TError,
@@ -188,184 +192,58 @@ export const createAuthRegister = <TError = unknown,
  */
 export const authMe = (
     
- signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<AuthMe200>(
-      {url: `http://localhost:4000/auth/me`, method: 'POST', signal
+      {url: `http://localhost:4000/auth/me`, method: 'GET', signal
     },
-      );
-    }
-  
-
-
-export const getAuthMeMutationOptions = <TError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authMe>>, TError,void, TContext>, }
-): CreateMutationOptions<Awaited<ReturnType<typeof authMe>>, TError,void, TContext> => {
-
-const mutationKey = ['authMe'];
-const {mutation: mutationOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authMe>>, void> = () => {
-          
-
-          return  authMe()
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AuthMeMutationResult = NonNullable<Awaited<ReturnType<typeof authMe>>>
-    
-    export type AuthMeMutationError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500
-
-    /**
- * @summary me
- */
-export const createAuthMe = <TError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authMe>>, TError,void, TContext>, }
- , queryClient?: QueryClient): CreateMutationResult<
-        Awaited<ReturnType<typeof authMe>>,
-        TError,
-        void,
-        TContext
-      > => {
-
-      const mutationOptions = getAuthMeMutationOptions(options);
-
-      return createMutation(() => ({ ...mutationOptions, queryClient }));
-    }
-    /**
- * logout user from the account
- * @summary Logout
- */
-export const authLogout = (
-    
- signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<AuthLogout200>(
-      {url: `http://localhost:4000/auth/logout`, method: 'POST', signal
-    },
-      );
-    }
-  
-
-
-export const getAuthLogoutMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogout>>, TError,void, TContext>, }
-): CreateMutationOptions<Awaited<ReturnType<typeof authLogout>>, TError,void, TContext> => {
-
-const mutationKey = ['authLogout'];
-const {mutation: mutationOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authLogout>>, void> = () => {
-          
-
-          return  authLogout()
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AuthLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof authLogout>>>
-    
-    export type AuthLogoutMutationError = unknown
-
-    /**
- * @summary Logout
- */
-export const createAuthLogout = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authLogout>>, TError,void, TContext>, }
- , queryClient?: QueryClient): CreateMutationResult<
-        Awaited<ReturnType<typeof authLogout>>,
-        TError,
-        void,
-        TContext
-      > => {
-
-      const mutationOptions = getAuthLogoutMutationOptions(options);
-
-      return createMutation(() => ({ ...mutationOptions, queryClient }));
-    }
-    /**
- * refresh access and refresh tokens
- * @summary refresh
- */
-export const authRefreshTokens = (
-    
- signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<AuthRefreshTokens200>(
-      {url: `http://localhost:4000/auth/refresh`, method: 'GET', signal
-    },
-      );
+      options);
     }
   
 
 
 
-export const getAuthRefreshTokensQueryKey = () => {
+export const getAuthMeQueryKey = () => {
     return [
-    `http://localhost:4000/auth/refresh`
+    `http://localhost:4000/auth/me`
     ] as const;
     }
 
     
-export const getAuthRefreshTokensQueryOptions = <TData = Awaited<ReturnType<typeof authRefreshTokens>>, TError = unknown>( options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError, TData>>, }
+export const getAuthMeQueryOptions = <TData = Awaited<ReturnType<typeof authMe>>, TError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500>( options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof authMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
-const {query: queryOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getAuthRefreshTokensQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getAuthMeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof authRefreshTokens>>> = ({ signal }) => authRefreshTokens(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMe>>> = ({ signal }) => authMe(requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as CreateQueryOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as CreateQueryOptions<Awaited<ReturnType<typeof authMe>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type AuthRefreshTokensQueryResult = NonNullable<Awaited<ReturnType<typeof authRefreshTokens>>>
-export type AuthRefreshTokensQueryError = unknown
+export type AuthMeQueryResult = NonNullable<Awaited<ReturnType<typeof authMe>>>
+export type AuthMeQueryError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500
 
 
 /**
- * @summary refresh
+ * @summary me
  */
 
-export function createAuthRefreshTokens<TData = Awaited<ReturnType<typeof authRefreshTokens>>, TError = unknown>(
-  options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError, TData>>, }
+export function createAuthMe<TData = Awaited<ReturnType<typeof authMe>>, TError = AuthMe400 | AuthMe401 | AuthMe403 | AuthMe404 | AuthMe409 | AuthMe422 | AuthMe500>(
+  options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof authMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getAuthRefreshTokensQueryOptions(options)
+  const queryOptions = getAuthMeQueryOptions(options)
 
   const query = createQuery(() => ({ ...queryOptions, queryClient })) as CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -377,3 +255,68 @@ export function createAuthRefreshTokens<TData = Awaited<ReturnType<typeof authRe
 
 
 
+/**
+ * refresh access and refresh tokens
+ * @summary refresh
+ */
+export const authRefreshTokens = (
+    authRefreshTokensBody: AuthRefreshTokensBodyOne | AuthRefreshTokensBodyTwo | AuthRefreshTokensBodyThree,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<AuthRefreshTokens200>(
+      {url: `http://localhost:4000/auth/refresh`, method: 'POST',
+      data: authRefreshTokensBody, signal
+    },
+      options);
+    }
+  
+
+
+export const getAuthRefreshTokensMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError,{data: AuthRefreshTokensBodyOne | AuthRefreshTokensBodyTwo | AuthRefreshTokensBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
+): CreateMutationOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError,{data: AuthRefreshTokensBodyOne | AuthRefreshTokensBodyTwo | AuthRefreshTokensBodyThree}, TContext> => {
+
+const mutationKey = ['authRefreshTokens'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authRefreshTokens>>, {data: AuthRefreshTokensBodyOne | AuthRefreshTokensBodyTwo | AuthRefreshTokensBodyThree}> = (props) => {
+          const {data} = props ?? {};
+
+          return  authRefreshTokens(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AuthRefreshTokensMutationResult = NonNullable<Awaited<ReturnType<typeof authRefreshTokens>>>
+    export type AuthRefreshTokensMutationBody = AuthRefreshTokensBodyOne | AuthRefreshTokensBodyTwo | AuthRefreshTokensBodyThree
+    export type AuthRefreshTokensMutationError = unknown
+
+    /**
+ * @summary refresh
+ */
+export const createAuthRefreshTokens = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof authRefreshTokens>>, TError,{data: AuthRefreshTokensBodyOne | AuthRefreshTokensBodyTwo | AuthRefreshTokensBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): CreateMutationResult<
+        Awaited<ReturnType<typeof authRefreshTokens>>,
+        TError,
+        {data: AuthRefreshTokensBodyOne | AuthRefreshTokensBodyTwo | AuthRefreshTokensBodyThree},
+        TContext
+      > => {
+
+      const mutationOptions = getAuthRefreshTokensMutationOptions(options);
+
+      return createMutation(() => ({ ...mutationOptions, queryClient }));
+    }
+    

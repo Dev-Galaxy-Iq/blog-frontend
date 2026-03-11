@@ -6,7 +6,7 @@
  * OpenAPI spec version: 0.0.0
  */
 
-export type AuthLogin200Data = {
+export type AuthRefreshTokens200Data = {
   accessToken: string;
   refreshToken: string;
 };

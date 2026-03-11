@@ -28,3 +28,11 @@ export const authRegisterBody = zod.object({
   "name": zod.string()
 })
 
+/**
+ * refresh access and refresh tokens
+ * @summary refresh
+ */
+export const authRefreshTokensBody = zod.object({
+  "refreshToken": zod.string()
+})
+

@@ -31,6 +31,8 @@ import type {
 import { customInstance } from '../../custom-instance';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
 
 
 /**
@@ -39,14 +41,14 @@ import { customInstance } from '../../custom-instance';
  */
 export const getUsersShowByUserId = (
     userId: string,
- signal?: AbortSignal
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<GetUsersShowByUserId200>(
       {url: `http://localhost:4000/users/show/${userId}`, method: 'GET', signal
     },
-      );
+      options);
     }
   
 
@@ -59,16 +61,16 @@ export const getGetUsersShowByUserIdQueryKey = (userId?: string,) => {
     }
 
     
-export const getGetUsersShowByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof getUsersShowByUserId>>, TError = GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500>(userId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getUsersShowByUserId>>, TError, TData>>, }
+export const getGetUsersShowByUserIdQueryOptions = <TData = Awaited<ReturnType<typeof getUsersShowByUserId>>, TError = GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500>(userId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getUsersShowByUserId>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
-const {query: queryOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetUsersShowByUserIdQueryKey(userId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersShowByUserId>>> = ({ signal }) => getUsersShowByUserId(userId, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersShowByUserId>>> = ({ signal }) => getUsersShowByUserId(userId, requestOptions, signal);
 
       
 
@@ -86,7 +88,7 @@ export type GetUsersShowByUserIdQueryError = GetUsersShowByUserId400 | GetUsersS
  */
 
 export function createGetUsersShowByUserId<TData = Awaited<ReturnType<typeof getUsersShowByUserId>>, TError = GetUsersShowByUserId400 | GetUsersShowByUserId401 | GetUsersShowByUserId403 | GetUsersShowByUserId404 | GetUsersShowByUserId409 | GetUsersShowByUserId422 | GetUsersShowByUserId500>(
- userId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getUsersShowByUserId>>, TError, TData>>, }
+ userId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getUsersShowByUserId>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

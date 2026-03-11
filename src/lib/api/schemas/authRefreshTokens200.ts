@@ -5,9 +5,10 @@
  * Development documentation
  * OpenAPI spec version: 0.0.0
  */
+import type { AuthRefreshTokens200Data } from './authRefreshTokens200Data';
 
 export type AuthRefreshTokens200 = {
   success: boolean;
   message: string;
-  data: null;
+  data: AuthRefreshTokens200Data;
 };
