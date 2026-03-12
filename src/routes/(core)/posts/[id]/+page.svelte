@@ -7,11 +7,20 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Card from '$lib/components/ui/card';
 	import { ArrowLeft, Check, Pencil, RefreshCw, Trash2, X } from '@lucide/svelte';
+	import type { Snapshot } from '@sveltejs/kit';
 
 	const { data } = $props();
 
 	let editingId = $state<number | null>(null);
 	let editContent = $state('');
+
+	export const snapshot: Snapshot<{ editingId: number | null; editContent: string }> = {
+		capture: () => ({ editContent, editingId }),
+		restore: (value) => {
+			editingId = value.editingId;
+			editContent = value.editContent;
+		}
+	};
 </script>
 
 <div class="mx-auto max-w-2xl space-y-6 p-4">
