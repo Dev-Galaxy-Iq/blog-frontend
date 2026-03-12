@@ -7,8 +7,10 @@
 	import DropdownMenuContent from '$lib/components/ui/dropdown-menu/dropdown-menu-content.svelte';
 	import DropdownMenuItem from '$lib/components/ui/dropdown-menu/dropdown-menu-item.svelte';
 	import { enhance } from '$app/forms';
+	import UpdateProfileDialog from '$lib/components/custom/shared/updateProfileDialog.svelte';
 
 	const { children, data } = $props();
+	let dialogOpen = $state(false);
 </script>
 
 <nav class="sticky top-0 z-50 flex items-center justify-between bg-muted p-4">
@@ -27,7 +29,9 @@
 					<button type="submit" class="w-full text-left">logout</button>
 				</DropdownMenuItem>
 			</form>
+			<DropdownMenuItem onclick={() => (dialogOpen = !dialogOpen)}>Upadte Profile</DropdownMenuItem>
 		</DropdownMenuContent>
 	</DropdownMenu>
+	<UpdateProfileDialog {dialogOpen} />
 </nav>
 {@render children()}

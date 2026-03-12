@@ -33,14 +33,6 @@ import type {
   AddCommentBodyOne,
   AddCommentBodyThree,
   AddCommentBodyTwo,
-  DeleteCommentsByCommentId200,
-  DeleteCommentsByCommentId400,
-  DeleteCommentsByCommentId401,
-  DeleteCommentsByCommentId403,
-  DeleteCommentsByCommentId404,
-  DeleteCommentsByCommentId409,
-  DeleteCommentsByCommentId422,
-  DeleteCommentsByCommentId500,
   GetCommentsShowByCommentId200,
   GetCommentsShowByCommentId400,
   GetCommentsShowByCommentId401,
@@ -57,23 +49,29 @@ import type {
   ListComments409,
   ListComments422,
   ListComments500,
-  PatchCommentsByCommentId200,
-  PatchCommentsByCommentId400,
-  PatchCommentsByCommentId401,
-  PatchCommentsByCommentId403,
-  PatchCommentsByCommentId404,
-  PatchCommentsByCommentId409,
-  PatchCommentsByCommentId422,
-  PatchCommentsByCommentId500,
-  PatchCommentsByCommentIdBodyOne,
-  PatchCommentsByCommentIdBodyThree,
-  PatchCommentsByCommentIdBodyTwo
+  RemoveComment200,
+  RemoveComment400,
+  RemoveComment401,
+  RemoveComment403,
+  RemoveComment404,
+  RemoveComment409,
+  RemoveComment422,
+  RemoveComment500,
+  UpdateComment200,
+  UpdateComment400,
+  UpdateComment401,
+  UpdateComment403,
+  UpdateComment404,
+  UpdateComment409,
+  UpdateComment422,
+  UpdateComment500,
+  UpdateCommentBodyOne,
+  UpdateCommentBodyThree,
+  UpdateCommentBodyTwo
 } from '.././schemas';
 
 import { customInstance } from '../../custom-instance';
 
-
-type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
@@ -84,7 +82,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 export const addComment = (
     postId: string,
     addCommentBody: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
       
       
@@ -92,21 +90,21 @@ export const addComment = (
       {url: `http://localhost:4000/comments/${postId}`, method: 'POST',
       data: addCommentBody, signal
     },
-      options);
+      );
     }
   
 
 
 export const getAddCommentMutationOptions = <TError = AddComment400 | AddComment401 | AddComment403 | AddComment404 | AddComment409 | AddComment422 | AddComment500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext>, }
 ): CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext> => {
 
 const mutationKey = ['addComment'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -114,7 +112,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addComment>>, {postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}> = (props) => {
           const {postId,data} = props ?? {};
 
-          return  addComment(postId,data,requestOptions)
+          return  addComment(postId,data,)
         }
 
         
@@ -130,7 +128,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
  * @summary add
  */
 export const createAddComment = <TError = AddComment400 | AddComment401 | AddComment403 | AddComment404 | AddComment409 | AddComment422 | AddComment500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof addComment>>, TError,{postId: string;data: AddCommentBodyOne | AddCommentBodyTwo | AddCommentBodyThree}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
         Awaited<ReturnType<typeof addComment>>,
         TError,
@@ -148,14 +146,14 @@ export const createAddComment = <TError = AddComment400 | AddComment401 | AddCom
  */
 export const listComments = (
     postId: string,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
       
       
       return customInstance<ListComments200>(
       {url: `http://localhost:4000/comments/${postId}`, method: 'GET', signal
     },
-      options);
+      );
     }
   
 
@@ -168,16 +166,16 @@ export const getListCommentsQueryKey = (postId?: string,) => {
     }
 
     
-export const getListCommentsQueryOptions = <TData = Awaited<ReturnType<typeof listComments>>, TError = ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500>(postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listComments>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getListCommentsQueryOptions = <TData = Awaited<ReturnType<typeof listComments>>, TError = ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500>(postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listComments>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getListCommentsQueryKey(postId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof listComments>>> = ({ signal }) => listComments(postId, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listComments>>> = ({ signal }) => listComments(postId, signal);
 
       
 
@@ -195,7 +193,7 @@ export type ListCommentsQueryError = ListComments400 | ListComments401 | ListCom
  */
 
 export function createListComments<TData = Awaited<ReturnType<typeof listComments>>, TError = ListComments400 | ListComments401 | ListComments403 | ListComments404 | ListComments409 | ListComments422 | ListComments500>(
- postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listComments>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ postId: string, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof listComments>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -217,14 +215,14 @@ export function createListComments<TData = Awaited<ReturnType<typeof listComment
  */
 export const getCommentsShowByCommentId = (
     commentId: number,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+ signal?: AbortSignal
 ) => {
       
       
       return customInstance<GetCommentsShowByCommentId200>(
       {url: `http://localhost:4000/comments/show/${commentId}`, method: 'GET', signal
     },
-      options);
+      );
     }
   
 
@@ -237,16 +235,16 @@ export const getGetCommentsShowByCommentIdQueryKey = (commentId?: number,) => {
     }
 
     
-export const getGetCommentsShowByCommentIdQueryOptions = <TData = Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError = GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500>(commentId: number, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetCommentsShowByCommentIdQueryOptions = <TData = Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError = GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500>(commentId: number, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, request: requestOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCommentsShowByCommentIdQueryKey(commentId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCommentsShowByCommentId>>> = ({ signal }) => getCommentsShowByCommentId(commentId, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCommentsShowByCommentId>>> = ({ signal }) => getCommentsShowByCommentId(commentId, signal);
 
       
 
@@ -264,7 +262,7 @@ export type GetCommentsShowByCommentIdQueryError = GetCommentsShowByCommentId400
  */
 
 export function createGetCommentsShowByCommentId<TData = Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError = GetCommentsShowByCommentId400 | GetCommentsShowByCommentId401 | GetCommentsShowByCommentId403 | GetCommentsShowByCommentId404 | GetCommentsShowByCommentId409 | GetCommentsShowByCommentId422 | GetCommentsShowByCommentId500>(
- commentId: number, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ commentId: number, options?: { query?:Partial<CreateQueryOptions<Awaited<ReturnType<typeof getCommentsShowByCommentId>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -284,39 +282,39 @@ export function createGetCommentsShowByCommentId<TData = Awaited<ReturnType<type
  * Comments Endpoints
  * @summary update
  */
-export const patchCommentsByCommentId = (
+export const updateComment = (
     commentId: number,
-    patchCommentsByCommentIdBody: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree,
- options?: SecondParameter<typeof customInstance>,) => {
+    updateCommentBody: UpdateCommentBodyOne | UpdateCommentBodyTwo | UpdateCommentBodyThree,
+ ) => {
       
       
-      return customInstance<PatchCommentsByCommentId200>(
+      return customInstance<UpdateComment200>(
       {url: `http://localhost:4000/comments/${commentId}`, method: 'PATCH',
-      data: patchCommentsByCommentIdBody
+      data: updateCommentBody
     },
-      options);
+      );
     }
   
 
 
-export const getPatchCommentsByCommentIdMutationOptions = <TError = PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof patchCommentsByCommentId>>, TError,{commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
-): CreateMutationOptions<Awaited<ReturnType<typeof patchCommentsByCommentId>>, TError,{commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}, TContext> => {
+export const getUpdateCommentMutationOptions = <TError = UpdateComment400 | UpdateComment401 | UpdateComment403 | UpdateComment404 | UpdateComment409 | UpdateComment422 | UpdateComment500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof updateComment>>, TError,{commentId: number;data: UpdateCommentBodyOne | UpdateCommentBodyTwo | UpdateCommentBodyThree}, TContext>, }
+): CreateMutationOptions<Awaited<ReturnType<typeof updateComment>>, TError,{commentId: number;data: UpdateCommentBodyOne | UpdateCommentBodyTwo | UpdateCommentBodyThree}, TContext> => {
 
-const mutationKey = ['patchCommentsByCommentId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
+const mutationKey = ['updateComment'];
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof patchCommentsByCommentId>>, {commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateComment>>, {commentId: number;data: UpdateCommentBodyOne | UpdateCommentBodyTwo | UpdateCommentBodyThree}> = (props) => {
           const {commentId,data} = props ?? {};
 
-          return  patchCommentsByCommentId(commentId,data,requestOptions)
+          return  updateComment(commentId,data,)
         }
 
         
@@ -324,23 +322,23 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type PatchCommentsByCommentIdMutationResult = NonNullable<Awaited<ReturnType<typeof patchCommentsByCommentId>>>
-    export type PatchCommentsByCommentIdMutationBody = PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree
-    export type PatchCommentsByCommentIdMutationError = PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500
+    export type UpdateCommentMutationResult = NonNullable<Awaited<ReturnType<typeof updateComment>>>
+    export type UpdateCommentMutationBody = UpdateCommentBodyOne | UpdateCommentBodyTwo | UpdateCommentBodyThree
+    export type UpdateCommentMutationError = UpdateComment400 | UpdateComment401 | UpdateComment403 | UpdateComment404 | UpdateComment409 | UpdateComment422 | UpdateComment500
 
     /**
  * @summary update
  */
-export const createPatchCommentsByCommentId = <TError = PatchCommentsByCommentId400 | PatchCommentsByCommentId401 | PatchCommentsByCommentId403 | PatchCommentsByCommentId404 | PatchCommentsByCommentId409 | PatchCommentsByCommentId422 | PatchCommentsByCommentId500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof patchCommentsByCommentId>>, TError,{commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const createUpdateComment = <TError = UpdateComment400 | UpdateComment401 | UpdateComment403 | UpdateComment404 | UpdateComment409 | UpdateComment422 | UpdateComment500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof updateComment>>, TError,{commentId: number;data: UpdateCommentBodyOne | UpdateCommentBodyTwo | UpdateCommentBodyThree}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
-        Awaited<ReturnType<typeof patchCommentsByCommentId>>,
+        Awaited<ReturnType<typeof updateComment>>,
         TError,
-        {commentId: number;data: PatchCommentsByCommentIdBodyOne | PatchCommentsByCommentIdBodyTwo | PatchCommentsByCommentIdBodyThree},
+        {commentId: number;data: UpdateCommentBodyOne | UpdateCommentBodyTwo | UpdateCommentBodyThree},
         TContext
       > => {
 
-      const mutationOptions = getPatchCommentsByCommentIdMutationOptions(options);
+      const mutationOptions = getUpdateCommentMutationOptions(options);
 
       return createMutation(() => ({ ...mutationOptions, queryClient }));
     }
@@ -348,37 +346,37 @@ export const createPatchCommentsByCommentId = <TError = PatchCommentsByCommentId
  * Comments Endpoints
  * @summary remove
  */
-export const deleteCommentsByCommentId = (
+export const removeComment = (
     commentId: number,
- options?: SecondParameter<typeof customInstance>,) => {
+ ) => {
       
       
-      return customInstance<DeleteCommentsByCommentId200>(
+      return customInstance<RemoveComment200>(
       {url: `http://localhost:4000/comments/${commentId}`, method: 'DELETE'
     },
-      options);
+      );
     }
   
 
 
-export const getDeleteCommentsByCommentIdMutationOptions = <TError = DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, TError,{commentId: number}, TContext>, request?: SecondParameter<typeof customInstance>}
-): CreateMutationOptions<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, TError,{commentId: number}, TContext> => {
+export const getRemoveCommentMutationOptions = <TError = RemoveComment400 | RemoveComment401 | RemoveComment403 | RemoveComment404 | RemoveComment409 | RemoveComment422 | RemoveComment500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof removeComment>>, TError,{commentId: number}, TContext>, }
+): CreateMutationOptions<Awaited<ReturnType<typeof removeComment>>, TError,{commentId: number}, TContext> => {
 
-const mutationKey = ['deleteCommentsByCommentId'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
+const mutationKey = ['removeComment'];
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, {commentId: number}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof removeComment>>, {commentId: number}> = (props) => {
           const {commentId} = props ?? {};
 
-          return  deleteCommentsByCommentId(commentId,requestOptions)
+          return  removeComment(commentId,)
         }
 
         
@@ -386,23 +384,23 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteCommentsByCommentIdMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCommentsByCommentId>>>
+    export type RemoveCommentMutationResult = NonNullable<Awaited<ReturnType<typeof removeComment>>>
     
-    export type DeleteCommentsByCommentIdMutationError = DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500
+    export type RemoveCommentMutationError = RemoveComment400 | RemoveComment401 | RemoveComment403 | RemoveComment404 | RemoveComment409 | RemoveComment422 | RemoveComment500
 
     /**
  * @summary remove
  */
-export const createDeleteCommentsByCommentId = <TError = DeleteCommentsByCommentId400 | DeleteCommentsByCommentId401 | DeleteCommentsByCommentId403 | DeleteCommentsByCommentId404 | DeleteCommentsByCommentId409 | DeleteCommentsByCommentId422 | DeleteCommentsByCommentId500,
-    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof deleteCommentsByCommentId>>, TError,{commentId: number}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const createRemoveComment = <TError = RemoveComment400 | RemoveComment401 | RemoveComment403 | RemoveComment404 | RemoveComment409 | RemoveComment422 | RemoveComment500,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof removeComment>>, TError,{commentId: number}, TContext>, }
  , queryClient?: QueryClient): CreateMutationResult<
-        Awaited<ReturnType<typeof deleteCommentsByCommentId>>,
+        Awaited<ReturnType<typeof removeComment>>,
         TError,
         {commentId: number},
         TContext
       > => {
 
-      const mutationOptions = getDeleteCommentsByCommentIdMutationOptions(options);
+      const mutationOptions = getRemoveCommentMutationOptions(options);
 
       return createMutation(() => ({ ...mutationOptions, queryClient }));
     }

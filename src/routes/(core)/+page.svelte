@@ -15,6 +15,7 @@
 	import { Trash } from '@lucide/svelte';
 
 	const { data } = $props();
+	let open = $state(false);
 </script>
 
 <div class="flex flex-col gap-4 p-4">
@@ -44,7 +45,13 @@
 						{/if}
 					</CardAction>
 				</CardHeader>
-				<CardContent>{post.content}</CardContent>
+				<CardContent
+					>{post.content}
+
+					<a href="/posts/{post.id}">
+						<Button>view</Button>
+					</a>
+				</CardContent>
 			</Card>
 		{/each}
 	</div>

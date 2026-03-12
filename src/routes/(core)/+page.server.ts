@@ -82,5 +82,24 @@ export const actions: Actions = {
     return {
       success: true
     }
+
+  },
+  updateProfile: async ({ request, cookies }) => {
+    const formData = await request.formData()
+    const name = formData.get("name")?.toString()
+    const avatarUrl = formData.get("avatarUrl")?.toString()
+
+
+    try {
+      // TODO: implement auth later on
+      //
+      // const res = await authu
+    } catch (error) { }
+
+
+
+
+
   }
+
 }

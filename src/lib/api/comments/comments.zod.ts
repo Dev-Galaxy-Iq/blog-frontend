@@ -41,11 +41,11 @@ export const getCommentsShowByCommentIdParams = zod.object({
  * Comments Endpoints
  * @summary update
  */
-export const patchCommentsByCommentIdParams = zod.object({
+export const updateCommentParams = zod.object({
   "commentId": zod.number()
 })
 
-export const patchCommentsByCommentIdBody = zod.object({
+export const updateCommentBody = zod.object({
   "message": zod.string()
 })
 
@@ -53,7 +53,7 @@ export const patchCommentsByCommentIdBody = zod.object({
  * Comments Endpoints
  * @summary remove
  */
-export const deleteCommentsByCommentIdParams = zod.object({
+export const removeCommentParams = zod.object({
   "commentId": zod.number()
 })
 
