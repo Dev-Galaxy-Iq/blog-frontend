@@ -1,7 +1,7 @@
 import { authMe } from "$lib/api/auth/auth";
 import { error } from "@sveltejs/kit";
-
 export const load = async () => {
+
 
   try {
     const res = await authMe();

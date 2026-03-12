@@ -3,7 +3,8 @@ import { addPost, listPosts, removePost } from '$lib/api/posts/posts.js';
 import { error, fail, type Actions } from '@sveltejs/kit';
 import { success } from 'zod';
 
-export const load = async () => {
+
+export const load = async ({ depends }) => {
   try {
     const [me, posts] = await Promise.all([
       authMe(),
@@ -11,6 +12,8 @@ export const load = async () => {
         page: 1, size: 100
       })
     ])
+
+
     return {
       me: me.data.data,  // not `user`
       posts: posts.data.data

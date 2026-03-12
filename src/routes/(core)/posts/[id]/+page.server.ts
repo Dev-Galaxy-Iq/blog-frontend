@@ -3,24 +3,34 @@ import { error, fail, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { addComment, listComments, removeComment, updateComment } from "$lib/api/comments/comments";
 
-export const load: PageServerLoad = async ({ params }) => {
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+export const load: PageServerLoad = async ({ params, depends }) => {
   if (!params.id) throw error(401, "post not found");
   try {
-    const [post, comments] = await Promise.all([
-      showPost(params.id),
-      listComments(params.id)
-    ]);
-    return { post: post.data.data, comments: comments.data.data };
+    depends("app:comments")
+    const post = await showPost(params.id)
+
+    const comments = delay(3000).then(async () => {
+      const res = await listComments(params.id);
+      return res.data.data;
+    });
+
+
+
+
+    return { post: post.data.data, comments };
   } catch (err) {
     throw error(500, "error while getting the post");
   }
 };
 
 export const actions: Actions = {
-  addComment: async ({ request }) => {
+  addComment: async ({ request, params }) => {
     const formData = await request.formData();
     const content = formData.get("content")?.toString();
-    const postId = formData.get("postId")?.toString();
+    const postId = params.id
+
     if (!content) return fail(400, { message: "please write something" });
     if (!postId) return fail(400, { message: "missing post id" });
     try {
